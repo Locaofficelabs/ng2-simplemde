@@ -3,6 +3,7 @@ import {
   OnInit,
   ViewEncapsulation
 } from '@angular/core'
+import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
 
 @Component({
   selector: 'simplemde-app',
@@ -12,6 +13,13 @@ import {
 export class AppComponent implements OnInit {
 
   value = '11111'
+  form: FormGroup;
 
-  ngOnInit() { }
+  constructor(private fb: FormBuilder) {}
+
+  ngOnInit() { 
+    this.form = this.fb.group({
+      'description': new FormControl('', Validators.required)
+    });
+  }
 }

@@ -12,7 +12,8 @@ import {
   ViewEncapsulation
 } from '@angular/core'
 import {
-  NG_VALUE_ACCESSOR
+  NG_VALUE_ACCESSOR,
+  ControlValueAccessor
 } from '@angular/forms'
 import { CommonModule } from '@angular/common'
 import { FormsModule } from '@angular/forms'
@@ -37,7 +38,10 @@ const SIMPLEMDE_CONTROL_VALUE_ACCESSOR: any = {
   ],
   styleUrls: ['../node_modules/simplemde/dist/simplemde.min.css']
 })
-export class Simplemde extends NgModelBase implements AfterViewInit, OnDestroy {
+export class Simplemde extends NgModelBase implements AfterViewInit, ControlValueAccessor, OnDestroy {
+  _onTouched: any;
+  _onChange: any;
+
   @ViewChild('simplemde') textarea: ElementRef
   @Input() options: SimpleMDE.Options = {}
 
@@ -47,8 +51,29 @@ export class Simplemde extends NgModelBase implements AfterViewInit, OnDestroy {
     if (v !== this._innerValue) {
       this._innerValue = v
       if (this.value != null) {
-        this.simplemde.value(this.value)
+        if (this.simplemde) {
+          this.simplemde.value(this.value)
+        }
       }
+    }
+  }
+
+  registerOnChange(fn: any): void {
+    this._onChange = fn;
+  }
+
+  registerOnTouched(fn: any): void {
+    this._onTouched = fn;
+  }
+
+  //get accessor
+  get value(): any { return this._innerValue; };
+
+  //set accessor including call the onchange callback
+  set value(v: any) {
+    if (v !== this._innerValue) {
+      this._innerValue = v;
+      this._onChange(v);
     }
   }
 
@@ -64,6 +89,7 @@ export class Simplemde extends NgModelBase implements AfterViewInit, OnDestroy {
 
     this.simplemde.codemirror.on('change', () => {
       this.value = this.simplemde.value()
+      this._onChange(this.value)
     })
   }
 

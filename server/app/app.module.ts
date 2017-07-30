@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core'
 import { BrowserModule } from '@angular/platform-browser'
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ShareModule } from '../share'
 import { SimplemdeModule, SIMPLEMDE_CONFIG } from '../../src'
 import { AppComponent } from './app.component'
@@ -14,6 +15,8 @@ import { AppComponent } from './app.component'
   imports: [
     BrowserModule,
     ShareModule,
+    FormsModule,
+    ReactiveFormsModule,
     SimplemdeModule.forRoot({
       provide: SIMPLEMDE_CONFIG,
       useValue: {

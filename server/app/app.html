@@ -1,3 +1,10 @@
 value: {{ value }}
 <simplemde [(ngModel)]="value"></simplemde>
 <simplemde [(ngModel)]="value" [options]="{ placeholder: '111' }"></simplemde>
+<form class="no-margin" novalidate [formGroup]="form" autocomplete="off">
+    <simplemde formControlName="description" [options]="{ hideIcons: ['image', 'link', 'fullscreen', 'guide', 'side-by-side'], placeholder: 'Descreva seu espaço com o máximo de detalhes possível com até 2000 caracteres.' }" required></simplemde>
+
+    <pre>{{form.value | json}}</pre>
+
+    <button type="submit" [disabled]="form.invalid">Save</button>
+</form>
